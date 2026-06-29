@@ -37,10 +37,10 @@ export default async function RootLayout({
     redirect("/auth/login");
   }
 
-  if (user) {
-    const loggedUser = await getUserByEmail(user.email!);
+  const loggedUser = user ? await getUserByEmail(user.email!) : null;
 
-    if (loggedUser && loggedUser.role !== "ADMIN") redirect("/member");
+  if (!loggedUser || loggedUser.role !== "ADMIN") {
+    redirect("/member");
   }
 
   return (
@@ -49,7 +49,7 @@ export default async function RootLayout({
       className={cn("antialiased", rockNRoll.variable, figtree.variable)}
     >
       <body className="bg-white">
-        <AdminTopBar user={user} />
+        <AdminTopBar user={loggedUser} />
         {children}
         <Toaster />
       </body>

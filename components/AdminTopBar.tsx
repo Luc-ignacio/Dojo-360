@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { Profile } from "./profile";
-import { User } from "@supabase/supabase-js";
+import { User } from "@/app/generated/prisma/client";
 
 export default function AdminTopBar({ user }: { user: User | null }) {
   const pathname = usePathname();
