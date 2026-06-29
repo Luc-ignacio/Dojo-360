@@ -1,0 +1,121 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Get a free hosted Postgres database in seconds: `npx create-db`
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMIN
+  INSTRUCTOR
+  MEMBER
+}
+
+enum Belt {
+  WHITE
+  BLUE
+  PURPLE
+  BROWN
+  BLACK
+}
+
+enum ClassType {
+  FUNDAMENTALS
+  INTERMEDIATE
+  ADVANCED
+  COMPETITION
+  NOGI
+}
+
+enum DayOfWeek {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}
+
+model User {
+  id                 String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  supabaseAuthId     String?         @unique
+  name               String
+  email              String          @unique
+  avatarUrl          String?
+  role               Role            @default(MEMBER)
+  belt               Belt            @default(WHITE)
+  stripes            Int             @default(0)
+  enrollmentDate     DateTime        @default(now())
+  SchedulesLed       ClassSchedule[] @relation("InstructorSchedules")
+  SessionsLed        ClassSession[]  @relation("InstructorSessions")
+  Attendance         Attendance[]
+  PromotionsReceived Promotion[]     @relation("MemberPromotions")
+  PromotionsGiven    Promotion[]     @relation("InstructorPromotions")
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+}
+
+model Promotion {
+  id           String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  oldBelt      Belt
+  newBelt      Belt
+  oldStripes   Int
+  newStripes   Int
+  memberId     String   @db.Uuid
+  Member       User     @relation("MemberPromotions", fields: [memberId], references: [id])
+  instructorId String   @db.Uuid
+  Instructor   User     @relation("InstructorPromotions", fields: [instructorId], references: [id])
+  promotedAt   DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model ClassSchedule {
+  id           String         @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name         String
+  classType    ClassType      @default(FUNDAMENTALS)
+  dayOfWeek    DayOfWeek
+  startTime    String
+  endTime      String
+  instructorId String         @db.Uuid
+  Instructor   User           @relation("InstructorSchedules", fields: [instructorId], references: [id])
+  Sessions     ClassSession[]
+  isActive     Boolean        @default(true)
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+}
+
+model ClassSession {
+  id            String        @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  scheduleId    String        @db.Uuid
+  Schedule      ClassSchedule @relation(fields: [scheduleId], references: [id])
+  name          String
+  instructorId  String        @db.Uuid
+  Instructor    User          @relation("InstructorSessions", fields: [instructorId], references: [id])
+  scheduledDate DateTime
+  Attendance    Attendance[]
+  isCancelled   Boolean       @default(false)
+  createdAt     DateTime      @default(now())
+  updatedAt     DateTime      @updatedAt
+}
+
+model Attendance {
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  memberId    String       @db.Uuid
+  Member      User         @relation(fields: [memberId], references: [id])
+  sessionId   String       @db.Uuid
+  Session     ClassSession @relation(fields: [sessionId], references: [id])
+  checkedInAt DateTime     @default(now())
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@unique([memberId, sessionId])
+}
