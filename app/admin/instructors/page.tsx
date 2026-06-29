@@ -1,5 +1,4 @@
 import CreateUser from "@/components/User/Create";
-// import { UsersIcon, TrendingUpIcon, DollarSignIcon } from "lucide-react";
 import { getUsers } from "@/app/actions/user";
 import { MembersTable } from "@/components/Tables/MembersTable";
 
@@ -20,51 +19,8 @@ export default async function MembersPage() {
           <CreateUser role={"INSTRUCTOR"} />
         </div>
 
-        {/* <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="bg-black rounded-xl p-4 flex w-full justify-between items-start">
-            <div className="space-y-1">
-              <p className="text-xs font-semibold uppercase text-neutral-300">
-                Members Enrolled
-              </p>
-              <p className="text-xl text-white">{instructors.length}</p>
-              <p className="text-sm text-neutral-400">
-                {newMembersCount} New Members This Month
-              </p>
-            </div>
-            <span className="p-2 bg-neutral-800 rounded-lg">
-              <UsersIcon className="text-neutral-400" />
-            </span>
-          </div>
-          <div className="bg-black rounded-xl p-4 flex w-full justify-between items-start">
-            <div className="space-y-1">
-              <p className="text-xs font-semibold uppercase text-neutral-300">
-                Attendance Today
-              </p>
-              <p className="text-xl text-white">0</p>
-              <p className="text-sm text-neutral-400">0 Adults | 0 Kids</p>
-            </div>
-            <span className="p-2 bg-neutral-800 rounded-lg">
-              <TrendingUpIcon className="text-neutral-400" />
-            </span>
-          </div>
-          <div className="bg-black rounded-xl p-4 flex w-full justify-between items-start">
-            <div className="space-y-1">
-              <p className="text-xs font-semibold uppercase text-neutral-300">
-                Estimated Revenue
-              </p>
-              <p className="text-xl text-white">0</p>
-              <p className="text-sm text-neutral-400">
-                Next Billing Cycle: 24 April
-              </p>
-            </div>
-            <span className="p-2 bg-neutral-800 rounded-lg">
-              <DollarSignIcon className="text-neutral-400" />
-            </span>
-          </div>
-        </div> */}
-
         <div>
-          <MembersTable data={instructors} />
+          <MembersTable instructors={instructors} />
         </div>
       </div>
     </main>

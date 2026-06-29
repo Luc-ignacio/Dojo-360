@@ -128,27 +128,6 @@ const columns: ColumnDef<SessionRow>[] = [
   },
 ];
 
-export function ClassSessionsTable({
-  data,
-}: {
-  data: ClassSession &
-    {
-      Instructor: {
-        name: string;
-        id: string;
-        avatarUrl: string | null;
-      };
-      Attendance: {
-        id: string;
-      }[];
-      Schedule: {
-        name: string;
-        classType: ClassType;
-        dayOfWeek: DayOfWeek;
-        startTime: string;
-        endTime: string;
-      } | null;
-    }[];
-}) {
+export function ClassSessionsTable({ data }: { data: SessionRow[] }) {
   return <DataTable columns={columns} data={data} />;
 }

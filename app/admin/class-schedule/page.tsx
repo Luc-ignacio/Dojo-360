@@ -24,7 +24,7 @@ export default async function ClassSchedulePage() {
         </div>
 
         <div>
-          <ClassSchedulesTable data={classSchedules} />
+          <ClassSchedulesTable schedules={classSchedules} />
         </div>
       </div>
     </main>

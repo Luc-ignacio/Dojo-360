@@ -10,7 +10,7 @@ import { formatDate } from "@/lib/utils";
 import AddPromotion from "../Promotion/AddPromotion";
 
 type Props = {
-  members: User[];
+  members?: User[];
   instructors: User[];
 };
 
@@ -89,5 +89,5 @@ export function MembersTable({ members, instructors }: Props) {
     },
   ];
 
-  return <DataTable columns={columns} data={members} />;
+  return <DataTable columns={columns} data={members || instructors} />;
 }

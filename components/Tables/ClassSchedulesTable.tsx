@@ -15,7 +15,7 @@ import ArchiveSchedule from "../Class/ArchiveSchedule";
 import { ClassScheduleWithInstructor } from "@/types/class";
 
 type Props = {
-  schedules: ClassScheduleWithInstructor;
+  schedules: ClassScheduleWithInstructor[];
 };
 
 export function ClassSchedulesTable({ schedules }: Props) {
